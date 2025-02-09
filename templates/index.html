@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academic Trivia Race</title>
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    <link href="/static/css/style.css" rel="stylesheet">
+</head>
+<body>
+    <div class="container py-4">
+        <h1 class="text-center mb-4">Academic Trivia Race</h1>
+        
+        <div class="race-track mb-4">
+            <div class="lane">
+                <div class="car player" id="player-car">
+                    <i class="fas fa-car"></i>
+                    <span class="label">You</span>
+                </div>
+            </div>
+            <div class="lane">
+                <div class="car bot1" id="bot1-car">
+                    <i class="fas fa-car"></i>
+                    <span class="label">Bot 1</span>
+                </div>
+            </div>
+            <div class="lane">
+                <div class="car bot2" id="bot2-car">
+                    <i class="fas fa-car"></i>
+                    <span class="label">Bot 2</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="question-container text-center">
+            <div class="timer mb-3">Time: <span id="timer">20</span>s</div>
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h3 id="question" class="card-title">Press "Start" to begin!</h3>
+                    <div class="input-group mb-3">
+                        <input type="text" id="answer" class="form-control" placeholder="Type your answer here">
+                        <button class="btn btn-primary" onclick="checkAnswer()">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div id="status" class="alert alert-info d-none"></div>
+            <button id="startBtn" class="btn btn-success" onclick="startGame()">Start Game</button>
+        </div>
+    </div>
+
+    <script src="https://kit.fontawesome.com/a076d05399.js"></script>
+    <script src="/static/js/game.js"></script>
+</body>
+</html>
