@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trivia Race</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .race-track {
+            width: 100%;
+            max-width: 600px;
+            height: 200px;
+            margin: auto;
+            border: 2px solid black;
+            position: relative;
+            overflow: hidden;
+        }
+        .car {
+            width: 50px;
+            height: 50px;
+            position: absolute;
+            bottom: 10px;
+            transition: transform 0.5s;
+        }
+        .player { left: 10px; }
+        .bot1 { left: 10px; bottom: 70px; }
+        .bot2 { left: 10px; bottom: 130px; }
+        .question-container {
+            margin: 20px;
+        }
+        input {
+            padding: 5px;
+            font-size: 16px;
+        }
+        button {
+            padding: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Trivia Race Game</h1>
+    <div class="race-track">
+        <img src="car.png" class="car player" id="player-car">
+        <img src="car.png" class="car bot1" id="bot1-car">
+        <img src="car.png" class="car bot2" id="bot2-car">
+    </div>
+
+    <div class="question-container">
+        <p id="question">Press "Start" to begin!</p>
+        <input type="text" id="answer" placeholder="Type your answer here">
+        <button onclick="checkAnswer()">Submit</button>
+        <p id="status"></p>
+    </div>
+
+    <button onclick="startGame()">Start Game</button>
+
+    <script>
+        const questions = [
+            { question: "Who wrote 'Moby-Dick'?", answer: "Herman Melville" },
+            { question: "Who painted the Mona Lisa?", answer: "Leonardo da Vinci" },
+            { question: "First President of the United States?", answer: "George Washington" },
+            { question: "What's the derivative of x^2?", answer: "2x" },
+            { question: "What year did WW2 end?", answer: "1945" }
+        ];
+        
+        let playerPosition = 0, bot1Position = 0, bot2Position = 0;
+        let currentQuestion = {};
+        let gameActive = false;
+        
+        function startGame() {
+            gameActive = true;
+            nextQuestion();
+        }
+
+        function nextQuestion() {
+            if (playerPosition >= 10) return endGame("Player wins!");
+            if (bot1Position >= 10) return endGame("Bot 1 wins!");
+            if (bot2Position >= 10) return endGame("Bot 2 wins!");
+
+            currentQuestion = questions[Math.floor(Math.random() * questions.length)];
+            document.getElementById("question").textContent = currentQuestion.question;
+            document.getElementById("answer").value = "";
+        }
+
+        function checkAnswer() {
+            if (!gameActive) return;
+
+            const userAnswer = document.getElementById("answer").value.trim();
+            if (userAnswer.toLowerCase() === currentQuestion.answer.toLowerCase()) {
+                playerPosition++;
+                moveCar("player-car", playerPosition);
+                document.getElementById("status").textContent = "Correct! Your car moves forward.";
+            } else {
+                playerPosition = Math.max(0, playerPosition - 1);
+                moveCar("player-car", playerPosition);
+                document.getElementById("status").textContent = "Wrong! Your car moves backward.";
+            }
+
+            // Simulate AI bots' answers
+            bot1Position += Math.random() > 0.5 ? 1 : -1;
+            bot2Position += Math.random() > 0.5 ? 1 : -1;
+            moveCar("bot1-car", bot1Position);
+            moveCar("bot2-car", bot2Position);
+
+            nextQuestion();
+        }
+
+        function moveCar(carId, position) {
+            const car = document.getElementById(carId);
+            car.style.transform = `translateX(${position * 50}px)`;
+        }
+
+        function endGame(winner) {
+            gameActive = false;
+            document.getElementById("question").textContent = winner;
+            document.getElementById("status").textContent = "Game Over!";
+        }
+    </script>
+
+</body>
+</html>
